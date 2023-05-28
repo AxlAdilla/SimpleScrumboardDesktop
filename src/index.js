@@ -8,7 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import './global';
 import { Routes, Route, HashRouter } from 'react-router-dom';
 import Auth from './Pages/Auth';
-
+import SignUp from './Pages/SignUp';
+import ForgetPassword from './Pages/ForgetPassword';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,8 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path='/login' element={<Auth />} />
+        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/forget-password' element={<ForgetPassword />} />
         <Route path='/' element={<App />} />
         <Route path='/create/:id' element={<Create />} />
       </Routes>

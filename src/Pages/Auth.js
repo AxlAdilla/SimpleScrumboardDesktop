@@ -1,47 +1,75 @@
 import { useState } from 'react'
 import { supabase } from '../supabaseClient'
+import Footer from '../Layouts/Footer';
+import Navigator from '../Layouts/Navigation';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Auth() {
-  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [alertError, setAlertError] = useState(null)
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({ email })
-
-    if (error) {
-      alert(error.error_description || error.message)
-    } else {
-      alert('Check your email for the login link!')
-    }
-    setLoading(false)
+    supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      })
+      .then(res => {
+        console.log(res)
+        if(res.error !== null) {
+          setAlertError(res.error.message)
+        } else {
+          navigate('/')
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   return (
-    <div className="row flex flex-center">
-      <div className="col-6 form-widget">
-        <h1 className="header">Supabase + React</h1>
-        <p className="description">Sign in via magic link with your email below</p>
-        <form className="form-widget" onSubmit={handleLogin}>
-          <div>
-            <input
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              required={true}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div>
+      <Navigator />
+      <main className="create-card mt-5 py-3">
+        <div className="container ">
+          <div className="row">
+            <form onSubmit={handleLogin}>
+              <div className="mb-12">
+                <label className="form-label">Email</label>
+                <input required type="email" className="form-control" id="email"  onChange={(event) => setEmail(event.target.value)} name="email" />
+              </div>
+              <div className="mb-12">
+                <label className="form-label">Password</label>
+                <input required type="password" className="form-control" id="password" onChange={(event) => setPassword(event.target.value)} name="password" />
+              </div>
+              { (alertError) &&
+                <div className="alert alert-danger mt-3" role="alert">
+                  {alertError}
+                </div>
+              }
+              <div className="mt-3 mb-12 d-flex justify-content-between">
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </div>
+            </form>
+            <div className='d-flex flex-column justify-content-center text-center'>
+              <div>
+                <span>Dont have account yet? </span>
+                <Link to='/sign-up' relative="path">
+                  Sign Up
+                </Link>
+              </div>
+              <div>
+                <span>Forget your password? </span>
+                <Link to='/forget-password' relative="path">
+                  Login via email
+                </Link>
+              </div>
+            </div>
           </div>
-          <div>
-            <button className={'button block'} disabled={loading}>
-              {loading ? <span>Loading</span> : <span>Send magic link</span>}
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   )
 }

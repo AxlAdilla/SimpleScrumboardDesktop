@@ -1,8 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../Layouts/Footer';
 import Navigator from '../Layouts/Navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import checkLogin from '../Helpers/CheckLogin';
 
 function Create() {
   let {id} = useParams();
@@ -10,6 +11,7 @@ function Create() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [color, setColor] = useState('#0d6efd');
+  const [userId, setUserId] = useState('');
 
   function handleSubmit(event) {
     supabase
@@ -18,7 +20,8 @@ function Create() {
         title: title, 
         board_id: id,
         color: color,
-        description: description
+        description: description,
+        user_id: userId
       })
       .then((res) => {
         if (res.status === 201) {
@@ -34,6 +37,14 @@ function Create() {
 
     event.preventDefault();
   }
+
+  useEffect(() => {
+    checkLogin()
+      .then(uuid => {
+        setUserId(uuid)
+      })
+      .catch((err) => console.log(err))
+  })
 
   return (
     <div>
