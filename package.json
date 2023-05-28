@@ -1,9 +1,11 @@
 {
-  "name": "my-app",
+  "name": "simple-scrumboad",
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
   "main": "index.js",
+  "author": "Axl Adilla",
+  "description": "Simple Scrumboad",
   "dependencies": {
     "@supabase/supabase-js": "^2.23.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -23,7 +25,8 @@
     "@electron-forge/maker-rpm": "^6.1.1",
     "@electron-forge/maker-squirrel": "^6.1.1",
     "@electron-forge/maker-zip": "^6.1.1",
-    "electron": "24.4.0"
+    "electron": "24.4.0",
+    "electron-wix-msi": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +35,9 @@
     "eject": "react-scripts eject",
     "electron-start": "electron-forge start",
     "electron-package": "electron-forge package",
-    "electron-make": "electron-forge make"
+    "electron-make": "electron-forge make",
+    "electron-make:win": "electron-forge make --platform win32",
+    "electron-publish": "electron-forge publish"
   },
   "eslintConfig": {
     "extends": [
