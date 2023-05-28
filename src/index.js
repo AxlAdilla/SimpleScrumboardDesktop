@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './global.css';
 import './index.css';
-import App from './App';
+import App from './Pages/App';
+import Create from './Pages/Create';
 import reportWebVitals from './reportWebVitals';
+import './global';
+import { Routes, Route, HashRouter } from 'react-router-dom';
+import Auth from './Pages/Auth';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <HashRouter>
+      <Routes>
+        <Route path='/login' element={<Auth />} />
+        <Route path='/' element={<App />} />
+        <Route path='/create/:id' element={<Create />} />
+      </Routes>
+    </HashRouter>
   </React.StrictMode>
 );
 
